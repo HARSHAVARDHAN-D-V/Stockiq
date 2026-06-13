@@ -3,7 +3,6 @@
 function toggleTheme() {
     const body = document.body
     const btn = document.getElementById("theme-btn")
-    // Why: check current theme and switch to opposite
     if (body.classList.contains("light")) {
         body.classList.remove("light")
         btn.textContent = "☀️"
@@ -15,7 +14,6 @@ function toggleTheme() {
     }
 }
 
-// Why: remember user's theme preference across page reloads
 function loadTheme() {
     const saved = localStorage.getItem("theme")
     if (saved === "light") {
@@ -25,7 +23,6 @@ function loadTheme() {
 }
 
 loadTheme()
-
 
 const API = "https://default-granite-driveway.ngrok-free.dev"
 
@@ -88,13 +85,28 @@ async function deleteItem(id) {
     getShoppingList()
 }
 
-async function editItem(id, currentQuantity, currentExpiry) {
-    const newQuantity = prompt(`Update quantity (current: ${currentQuantity})`)
-    if (newQuantity === null || newQuantity === "") return
+// ─── EDIT ITEM MODAL ─────────────────────────────────────────
 
-    const newExpiry = prompt(`Update expiry date (current: ${currentExpiry || "none"})\nFormat: YYYY-MM-DD or leave blank to keep current`)
+let currentEditId = null  // Why: store which item is being edited
 
-    await fetch(`${API}/items/${id}`, {
+function editItem(id, currentQuantity, currentExpiry) {
+    currentEditId = id
+    document.getElementById("edit-quantity").value = currentQuantity
+    document.getElementById("edit-expiry").value = currentExpiry !== "null" ? currentExpiry : ""
+    document.getElementById("edit-modal").classList.add("active")
+    document.getElementById("edit-overlay").classList.add("active")
+}
+
+async function submitEdit() {
+    const newQuantity = document.getElementById("edit-quantity").value
+    const newExpiry = document.getElementById("edit-expiry").value
+
+    if (!newQuantity) {
+        alert("Quantity cannot be empty")
+        return
+    }
+
+    await fetch(`${API}/items/${currentEditId}`, {
         method: "PUT",
         headers: { ...HEADERS, "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -103,8 +115,15 @@ async function editItem(id, currentQuantity, currentExpiry) {
         })
     })
 
+    closeEditModal()
     getItems()
     getShoppingList()
+}
+
+function closeEditModal() {
+    document.getElementById("edit-modal").classList.remove("active")
+    document.getElementById("edit-overlay").classList.remove("active")
+    currentEditId = null
 }
 
 function getExpiryStatus(expiry_date) {
@@ -128,12 +147,13 @@ function renderItems(items) {
         return
     }
 
+    // sort items so red (expired/expiring soon) appear first, then yellow, then green
     const sorted = [...items].sort((a, b) => {
-    const order = { red: 0, yellow: 1, green: 2, "no-expiry": 3 }
-    const statusA = getExpiryStatus(a.expiry_date).cls
-    const statusB = getExpiryStatus(b.expiry_date).cls
-    return order[statusA] - order[statusB]
-})
+        const order = { red: 0, yellow: 1, green: 2, "no-expiry": 3 }
+        const statusA = getExpiryStatus(a.expiry_date).cls
+        const statusB = getExpiryStatus(b.expiry_date).cls
+        return order[statusA] - order[statusB]
+    })
 
     list.innerHTML = sorted.map(item => {
         const status = getExpiryStatus(item.expiry_date)
@@ -216,7 +236,6 @@ async function openCookModal() {
     document.getElementById("modal-overlay").classList.add("active")
     document.getElementById("suggestions-list").innerHTML = `<div class="empty-state">Loading your recipes... 🍳</div>`
 
-    // fetch pantry items and home recipes in parallel
     const [itemsRes, recipesRes] = await Promise.all([
         fetch(`${API}/items`, { headers: HEADERS }),
         fetch(`${API}/recipes`, { headers: HEADERS })
@@ -241,8 +260,10 @@ async function openCookModal() {
         <div class="dish-card">
             <div class="dish-card-header">
                 <h3>${recipe.name}</h3>
-                <button class="edit-recipe-btn" onclick="editRecipe(${recipe.id}, '${recipe.name}', '${recipe.ingredients}')">✏️</button>
-                <button class="delete-recipe-btn" onclick="deleteRecipe(${recipe.id})">🗑️</button>
+                <div class="recipe-actions">
+                    <button class="edit-recipe-btn" onclick="editRecipe(${recipe.id}, '${recipe.name}', '${recipe.ingredients}')">✏️</button>
+                    <button class="delete-recipe-btn" onclick="deleteRecipe(${recipe.id})">🗑️</button>
+                </div>
             </div>
             <div>
                 ${available.map(i => `<span class="ingredient-tag available">✓ ${i}</span>`).join("")}
@@ -257,24 +278,44 @@ async function deleteRecipe(id) {
     openCookModal()
 }
 
-async function editRecipe(id, currentName, currentIngredients) {
-    // prompt user for new name and ingredients
-    const newName = prompt(`Recipe name (current: ${currentName})`)
-    if (newName === null || newName === "") return
+// ─── EDIT RECIPE MODAL ────────────────────────────────────────
 
-    const newIngredients = prompt(`Ingredients (current: ${currentIngredients})`)
-    if (newIngredients === null || newIngredients === "") return
+let currentRecipeId = null  // Why: store which recipe is being edited
 
-    await fetch(`${API}/recipes/${id}`, {
+function editRecipe(id, currentName, currentIngredients) {
+    currentRecipeId = id
+    // prefill with current values
+    document.getElementById("edit-recipe-name").value = currentName
+    document.getElementById("edit-recipe-ingredients").value = currentIngredients
+    // open modal
+    document.getElementById("recipe-edit-modal").classList.add("active")
+    document.getElementById("recipe-edit-overlay").classList.add("active")
+}
+
+async function submitRecipeEdit() {
+    const newName = document.getElementById("edit-recipe-name").value.trim()
+    const newIngredients = document.getElementById("edit-recipe-ingredients").value.trim()
+
+    if (!newName || !newIngredients) {
+        alert("Both fields are required")
+        return
+    }
+
+    await fetch(`${API}/recipes/${currentRecipeId}`, {
         method: "PUT",
         headers: { ...HEADERS, "Content-Type": "application/json" },
         body: JSON.stringify({ name: newName, ingredients: newIngredients })
     })
 
-    // refresh modal to show updated recipe
+    closeRecipeEditModal()
     openCookModal()
 }
 
+function closeRecipeEditModal() {
+    document.getElementById("recipe-edit-modal").classList.remove("active")
+    document.getElementById("recipe-edit-overlay").classList.remove("active")
+    currentRecipeId = null
+}
 
 function closeModal() {
     document.getElementById("cook-modal").classList.remove("active")
@@ -310,6 +351,7 @@ async function getSuggestions() {
 
 getItems()
 getShoppingList()
+
 // Why: register service worker to enable PWA installation
 if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
@@ -318,4 +360,3 @@ if ("serviceWorker" in navigator) {
             .catch(err => console.log("Service worker failed:", err))
     })
 }
-

@@ -95,5 +95,31 @@
     <button class="fab" onclick="openDrawer()" aria-label="Open drawer">🛒</button>
 
     <script src="app.js"></script>
+
+<!-- edit item modal -->
+<div class="modal-overlay" id="edit-overlay" onclick="closeEditModal()"></div>
+<div class="modal" id="edit-modal">
+    <div class="modal-header">
+        <h2>✏️ Edit Item</h2>
+        <button class="close-btn" onclick="closeEditModal()">✕</button>
+    </div>
+    <input type="number" id="edit-quantity" placeholder="New quantity">
+    <label class="date-label">New Expiry Date</label>
+    <input type="date" id="edit-expiry">
+    <button class="save-recipe-btn" style="margin-top: 12px;" onclick="submitEdit()">Save Changes</button>
+</div>    
+<!-- edit recipe modal -->
+<div class="modal-overlay" id="recipe-edit-overlay" onclick="closeRecipeEditModal()"></div>
+<div class="modal" id="recipe-edit-modal">
+    <div class="modal-header">
+        <h2>✏️ Edit Recipe</h2>
+        <button class="close-btn" onclick="closeRecipeEditModal()">✕</button>
+    </div>
+    <input type="text" id="edit-recipe-name" placeholder="Recipe name">
+    <input type="text" id="edit-recipe-ingredients" placeholder="Ingredients (comma separated)">
+    <button class="save-recipe-btn" style="margin-top: 12px;" onclick="submitRecipeEdit()">Save Changes</button>
+</div>
+
+
 </body>
 </html>
