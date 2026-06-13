@@ -6,22 +6,33 @@
 
 body {
     font-family: 'Segoe UI', sans-serif;
-    background: #f0f4f8;
-    color: #333;
+    background: #0f0f0f;
+    color: #e0e0e0;
 }
 
+/* ─── HEADER ─────────────────────────────────────────── */
+
 .header {
-    background: #2d6a4f;
-    color: white;
+    background: #141414;
+    border-bottom: 1px solid #1e1e1e;
     padding: 20px;
     text-align: center;
 }
 
+.header h1 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+}
+
 .header p {
-    font-size: 14px;
-    opacity: 0.8;
+    font-size: 13px;
+    color: #555;
     margin-top: 4px;
 }
+
+/* ─── CONTAINER ──────────────────────────────────────── */
 
 .container {
     max-width: 600px;
@@ -29,211 +40,245 @@ body {
     padding: 16px;
 }
 
+/* ─── FORM CARD ──────────────────────────────────────── */
+
 .form-card {
-    background: white;
+    background: #141414;
+    border: 1px solid #1e1e1e;
     border-radius: 12px;
     padding: 20px;
     margin-top: 16px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .form-card h2 {
     margin-bottom: 16px;
-    font-size: 18px;
-    color: #2d6a4f;
+    font-size: 15px;
+    font-weight: 600;
+    color: #4ade80;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .form-card input {
     width: 100%;
     padding: 12px;
-    margin-bottom: 12px;
-    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
     border-radius: 8px;
-    font-size: 15px;
+    font-size: 14px;
+    color: #e0e0e0;
     outline: none;
 }
 
+.form-card input::placeholder {
+    color: #ccc;
+}
+
 .form-card input:focus {
-    border-color: #2d6a4f;
+    border-color: #4ade80;
 }
 
 .form-card button {
     width: 100%;
-    padding: 14px;
-    background: #2d6a4f;
-    color: white;
+    padding: 13px;
+    background: #4ade80;
+    color: #0f0f0f;
     border: none;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 15px;
+    font-weight: 600;
     cursor: pointer;
+    transition: background 0.2s;
 }
 
-.form-card button:active {
-    background: #1b4332;
+.form-card button:hover {
+    background: #22c55e;
 }
+
+/* ─── DATE LABEL ─────────────────────────────────────── */
+
+.date-label {
+    display: block;
+    font-size: 12px;
+    color: #555;
+    margin-bottom: 6px;
+    padding-left: 2px;
+}
+
+/* ─── FRIDGE TOGGLE ──────────────────────────────────── */
+
+.fridge-toggle {
+    margin-bottom: 12px;
+}
+
+.toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    color: #888;
+}
+
+.toggle-label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: #4ade80;
+}
+
+/* ─── ITEMS SECTION ──────────────────────────────────── */
 
 .items-section {
     margin-top: 24px;
 }
 
 .items-section h2 {
-    font-size: 18px;
-    color: #2d6a4f;
+    font-size: 15px;
+    font-weight: 600;
+    color: #4ade80;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     margin-bottom: 12px;
 }
 
+/* ─── ITEM CARD ──────────────────────────────────────── */
+
 .item-card {
-    background: white;
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    border-left: 5px solid #ccc;
+    background: #141414;
+    border: 1px solid #1e1e1e;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    border-left: 4px solid #2a2a2a;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.item-card.green {
-    border-left-color: #52b788;
-}
-
-.item-card.yellow {
-    border-left-color: #f4a261;
-}
-
-.item-card.red {
-    border-left-color: #e63946;
-}
-
-.item-card.no-expiry {
-    border-left-color: #adb5bd;
-}
+.item-card.green { border-left-color: #4ade80; }
+.item-card.yellow { border-left-color: #facc15; }
+.item-card.red { border-left-color: #f87171; }
+.item-card.no-expiry { border-left-color: #333; }
 
 .item-info h3 {
-    font-size: 16px;
-    margin-bottom: 4px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #ffffff;
+    margin-bottom: 3px;
 }
 
 .item-info p {
-    font-size: 13px;
-    color: #666;
+    font-size: 12px;
+    color: #555;
 }
 
 .item-info .expiry-tag {
-    font-size: 12px;
-    margin-top: 6px;
-    font-weight: 600;
+    font-size: 11px;
+    margin-top: 5px;
+    font-weight: 500;
 }
 
-.expiry-tag.green { color: #52b788; }
-.expiry-tag.yellow { color: #f4a261; }
-.expiry-tag.red { color: #e63946; }
-.expiry-tag.no-expiry { color: #adb5bd; }
+.expiry-tag.green { color: #4ade80; }
+.expiry-tag.yellow { color: #facc15; }
+.expiry-tag.red { color: #f87171; }
+.expiry-tag.no-expiry { color: #333; }
 
-.delete-btn {
-    background: none;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-    color: #adb5bd;
-}
+/* ─── ACTION BUTTONS ─────────────────────────────────── */
 
-.delete-btn:active {
-    color: #e63946;
-}
-
-.empty-state {
-    text-align: center;
-    color: #adb5bd;
-    padding: 40px 0;
-    font-size: 15px;
-}
 .action-btns {
     display: flex;
     gap: 8px;
     align-items: center;
 }
 
-.edit-btn {
+.edit-btn, .delete-btn {
     background: none;
     border: none;
-    font-size: 20px;
-    cursor: pointer;
-    color: #adb5bd;
-}
-
-.edit-btn:active {
-    color: #2d6a4f;
-}
-.shopping-section {
-    margin-top: 24px;
-}
-
-.shopping-section h2 {
-    font-size: 18px;
-    color: #2d6a4f;
-    margin-bottom: 12px;
-}
-
-.shopping-card {
-    background: white;
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.shopping-card h3 {
     font-size: 16px;
-    margin-bottom: 4px;
+    cursor: pointer;
+    opacity: 0.4;
+    transition: opacity 0.2s;
 }
 
-.shopping-card p {
-    font-size: 13px;
-    color: #666;
+.edit-btn:hover, .delete-btn:hover {
+    opacity: 1;
 }
 
-.reason-tag {
-    font-size: 12px;
-    font-weight: 600;
-    color: #e63946;
-    text-align: right;
+/* ─── COOK BUTTON ────────────────────────────────────── */
+
+.cook-btn {
+    width: 100%;
+    padding: 13px;
+    background: transparent;
+    color: #4ade80;
+    border: 1px solid #4ade80;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-bottom: 16px;
+    transition: all 0.2s;
 }
-/* overlay — dark background when drawer is open */
+
+.cook-btn:hover {
+    background: #4ade8015;
+}
+
+/* ─── FAB ────────────────────────────────────────────── */
+
+.fab {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #4ade80;
+    color: #0f0f0f;
+    font-size: 22px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(74, 222, 128, 0.3);
+    z-index: 50;
+    transition: transform 0.2s;
+}
+
+.fab:hover {
+    transform: scale(1.05);
+}
+
+/* ─── OVERLAY ────────────────────────────────────────── */
+
 .overlay {
     display: none;
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    background: rgba(0,0,0,0.4);
+    background: rgba(0,0,0,0.7);
     z-index: 100;
 }
 
-.overlay.active {
-    display: block;
-}
+.overlay.active { display: block; }
 
-/* drawer — slides in from left */
+/* ─── DRAWER ─────────────────────────────────────────── */
+
 .drawer {
     position: fixed;
     top: 0; left: -100%;
     width: 80%;
     max-width: 360px;
     height: 100%;
-    background: white;
+    background: #141414;
+    border-right: 1px solid #1e1e1e;
     z-index: 200;
-    padding: 20px;
+    padding: 24px 20px;
     overflow-y: auto;
     transition: left 0.3s ease;
 }
 
-.drawer.active {
-    left: 0;
-}
+.drawer.active { left: 0; }
 
 .drawer-header {
     display: flex;
@@ -243,104 +288,138 @@ body {
 }
 
 .drawer-header h2 {
-    color: #2d6a4f;
-    font-size: 18px;
+    color: #4ade80;
+    font-size: 16px;
+    font-weight: 600;
 }
 
 .close-btn {
     background: none;
     border: none;
-    font-size: 20px;
-    cursor: pointer;
-    color: #adb5bd;
-}
-
-/* floating action button fixed at bottom right */
-.fab {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: #2d6a4f;
-    color: white;
-    font-size: 24px;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    z-index: 50;
-}
-
-.fab:active {
-    background: #1b4332;
-}
-.date-label {
-    display: block;
-    font-size: 13px;
-    color: #888;
-    margin-bottom: 4px;
-    padding-left: 4px;
-}
-.fridge-toggle {
-    margin-bottom: 12px;
-}
-
-.toggle-label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 15px;
+    font-size: 18px;
     cursor: pointer;
     color: #555;
 }
 
-.toggle-label input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-    accent-color: #2d6a4f;
+.close-btn:hover { color: #fff; }
+
+/* ─── DRAWER SECTIONS ────────────────────────────────── */
+
+.drawer-section {
+    margin-bottom: 28px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #1e1e1e;
 }
 
-.cook-btn {
+.drawer-section:last-child { border-bottom: none; }
+
+.drawer-section-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #4ade80;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+}
+
+.drawer-section input {
     width: 100%;
-    padding: 14px;
-    background: white;
-    color: #2d6a4f;
-    border: 2px solid #2d6a4f;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
     border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-bottom: 16px;
+    font-size: 14px;
+    color: #e0e0e0;
+    outline: none;
 }
 
-.cook-btn:active {
-    background: #2d6a4f;
-    color: white;
+.drawer-section input::placeholder { color: #ccc; }
+.drawer-section input:focus { border-color: #4ade80; }
+
+.save-recipe-btn {
+    width: 100%;
+    padding: 11px;
+    background: #4ade80;
+    color: #0f0f0f;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
 }
+
+.ai-btn {
+    width: 100%;
+    padding: 11px;
+    background: transparent;
+    color: #4ade80;
+    border: 1px solid #4ade80;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-bottom: 12px;
+    transition: all 0.2s;
+}
+
+.ai-btn:hover { background: #4ade8015; }
+
+/* ─── SHOPPING CARD ──────────────────────────────────── */
+
+.shopping-card {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.shopping-card h3 {
+    font-size: 14px;
+    color: #fff;
+    margin-bottom: 3px;
+}
+
+.shopping-card p {
+    font-size: 12px;
+    color: #555;
+}
+
+.reason-tag {
+    font-size: 11px;
+    font-weight: 600;
+    color: #f87171;
+    text-align: right;
+    white-space: nowrap;
+    margin-left: 8px;
+}
+
+/* ─── MODAL ──────────────────────────────────────────── */
 
 .modal-overlay {
     display: none;
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    background: rgba(0,0,0,0.4);
+    background: rgba(0,0,0,0.7);
     z-index: 300;
 }
 
-.modal-overlay.active {
-    display: block;
-}
+.modal-overlay.active { display: block; }
 
 .modal {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(0.9);
+    transform: translate(-50%, -50%) scale(0.95);
     width: 90%;
     max-width: 500px;
     max-height: 80vh;
-    background: white;
+    background: #141414;
+    border: 1px solid #1e1e1e;
     border-radius: 16px;
     padding: 20px;
     z-index: 400;
@@ -364,92 +443,26 @@ body {
 }
 
 .modal-header h2 {
-    color: #2d6a4f;
-    font-size: 18px;
+    color: #4ade80;
+    font-size: 16px;
+    font-weight: 600;
 }
 
+/* ─── DISH CARD ──────────────────────────────────────── */
+
 .dish-card {
-    background: #f9f9f9;
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 12px;
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 10px;
 }
 
 .dish-card h3 {
-    font-size: 16px;
-    margin-bottom: 10px;
-    color: #333;
-}
-
-.ingredient-tag {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-    margin: 3px;
-    font-weight: 500;
-}
-
-.ingredient-tag.available {
-    background: #d8f3dc;
-    color: #2d6a4f;
-}
-
-.ingredient-tag.missing {
-    background: #ffe5e5;
-    color: #e63946;
-}
-.drawer-section {
-    margin-bottom: 28px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-.drawer-section:last-child {
-    border-bottom: none;
-}
-
-.drawer-section-title {
-    font-size: 16px;
-    color: #2d6a4f;
-    margin-bottom: 12px;
-}
-
-.drawer-section input {
-    width: 100%;
-    padding: 10px 12px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
     font-size: 14px;
-    outline: none;
-}
-
-.drawer-section input:focus {
-    border-color: #2d6a4f;
-}
-
-.save-recipe-btn {
-    width: 100%;
-    padding: 12px;
-    background: #2d6a4f;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 15px;
-    cursor: pointer;
-}
-
-.ai-btn {
-    width: 100%;
-    padding: 12px;
-    background: white;
-    color: #2d6a4f;
-    border: 2px solid #2d6a4f;
-    border-radius: 8px;
-    font-size: 15px;
-    cursor: pointer;
-    margin-bottom: 12px;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 8px;
 }
 
 .dish-card-header {
@@ -462,7 +475,210 @@ body {
 .delete-recipe-btn {
     background: none;
     border: none;
+    font-size: 14px;
+    cursor: pointer;
+    opacity: 0.4;
+    transition: opacity 0.2s;
+}
+
+.delete-recipe-btn:hover { opacity: 1; }
+
+/* ─── INGREDIENT TAGS ────────────────────────────────── */
+
+.ingredient-tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    margin: 3px;
+    font-weight: 500;
+}
+
+.ingredient-tag.available {
+    background: #14532d;
+    color: #4ade80;
+}
+
+.ingredient-tag.missing {
+    background: #3f1212;
+    color: #f87171;
+}
+
+/* ─── EMPTY STATE ────────────────────────────────────── */
+
+.empty-state {
+    text-align: center;
+    color: #333;
+    padding: 32px 0;
+    font-size: 14px;
+}
+
+/* ─── HEADER LAYOUT ──────────────────────────────────── */
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.theme-toggle {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
     font-size: 16px;
     cursor: pointer;
-    color: #adb5bd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
+/* ─── LIGHT MODE ─────────────────────────────────────── */
+
+body.light {
+    background: #f5f5f5;
+    color: #1a1a1a;
+}
+
+body.light .header {
+    background: #ffffff;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+body.light .header h1 { color: #1a1a1a; }
+body.light .header p { color: #888; }
+
+body.light .theme-toggle {
+    background: #f0f0f0;
+    border-color: #ddd;
+}
+
+body.light .form-card {
+    background: #ffffff;
+    border-color: #e5e5e5;
+}
+
+body.light .form-card h2 { color: #16a34a; }
+
+body.light .form-card input {
+    background: #f9f9f9;
+    border-color: #e0e0e0;
+    color: #1a1a1a;
+}
+
+body.light .form-card input::placeholder { color: #aaa; }
+body.light .form-card input:focus { border-color: #16a34a; }
+
+body.light .form-card button {
+    background: #16a34a;
+    color: #fff;
+}
+
+body.light .items-section h2 { color: #16a34a; }
+
+body.light .item-card {
+    background: #ffffff;
+    border-color: #e5e5e5;
+}
+
+body.light .item-card.green { border-left-color: #16a34a; }
+body.light .item-card.yellow { border-left-color: #ca8a04; }
+body.light .item-card.red { border-left-color: #dc2626; }
+
+body.light .item-info h3 { color: #1a1a1a; }
+body.light .item-info p { color: #888; }
+
+body.light .expiry-tag.green { color: #16a34a; }
+body.light .expiry-tag.yellow { color: #ca8a04; }
+body.light .expiry-tag.red { color: #dc2626; }
+
+body.light .cook-btn {
+    color: #16a34a;
+    border-color: #16a34a;
+}
+
+body.light .fab {
+    background: #16a34a;
+    box-shadow: 0 4px 20px rgba(22, 163, 74, 0.3);
+}
+
+body.light .drawer {
+    background: #ffffff;
+    border-right-color: #e5e5e5;
+}
+
+body.light .drawer-header h2 { color: #16a34a; }
+body.light .drawer-section { border-bottom-color: #e5e5e5; }
+body.light .drawer-section-title { color: #16a34a; }
+
+body.light .drawer-section input {
+    background: #f9f9f9;
+    border-color: #e0e0e0;
+    color: #1a1a1a;
+}
+
+body.light .save-recipe-btn {
+    background: #16a34a;
+    color: #fff;
+}
+
+body.light .ai-btn {
+    color: #16a34a;
+    border-color: #16a34a;
+}
+
+body.light .shopping-card {
+    background: #ffffff;
+    border-color: #e5e5e5;
+}
+
+body.light .shopping-card h3 { color: #1a1a1a; }
+body.light .shopping-card p { color: #888; }
+
+body.light .modal {
+    background: #ffffff;
+    border-color: #e5e5e5;
+}
+
+body.light .modal-header h2 { color: #16a34a; }
+
+body.light .dish-card {
+    background: #f9f9f9;
+    border-color: #e5e5e5;
+}
+
+body.light .dish-card h3 { color: #1a1a1a; }
+
+body.light .ingredient-tag.available {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+body.light .ingredient-tag.missing {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+body.light .empty-state { color: #bbb; }
+
+body.light .close-btn { color: #888; }
+body.light .close-btn:hover { color: #1a1a1a; }
+.recipe-actions {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.edit-recipe-btn {
+    background: none;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    opacity: 0.4;
+    transition: opacity 0.2s;
+}
+
+.edit-recipe-btn:hover { opacity: 1; }

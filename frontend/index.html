@@ -8,6 +8,17 @@
 </head>
 <body>
 
+    <!-- header -->
+    <div class="header">
+        <div class="header-content">
+            <div>
+                <h1>🥦 Pantry Tracker</h1>
+                <p>Track what's at home</p>
+            </div>
+            <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn" aria-label="Toggle theme">☀️</button>
+        </div>
+    </div>
+
     <!-- overlay for drawer -->
     <div class="overlay" id="overlay" onclick="closeDrawer()"></div>
 
@@ -18,7 +29,7 @@
         <div class="drawer-section">
             <div class="drawer-header">
                 <h2>🛒 Shopping List</h2>
-                <button class="close-btn" onclick="closeDrawer()">✕</button>
+                <button class="close-btn" onclick="closeDrawer()" aria-label="Close drawer">✕</button>
             </div>
             <div id="shopping-list"></div>
         </div>
@@ -45,14 +56,9 @@
     <div class="modal" id="cook-modal">
         <div class="modal-header">
             <h2>🍳 What can I cook?</h2>
-            <button class="close-btn" onclick="closeModal()">✕</button>
+            <button class="close-btn" onclick="closeModal()" aria-label="Close modal">✕</button>
         </div>
         <div id="suggestions-list"></div>
-    </div>
-
-    <div class="header">
-        <h1>🥦 Pantry Tracker</h1>
-        <p>Track what's at home</p>
     </div>
 
     <div class="container">
@@ -84,7 +90,7 @@
     </div>
 
     <!-- floating action button -->
-    <button class="fab" onclick="openDrawer()">🛒</button>
+    <button class="fab" onclick="openDrawer()" aria-label="Open drawer">🛒</button>
 
     <script src="app.js"></script>
 </body>

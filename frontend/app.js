@@ -1,9 +1,41 @@
-const API = "http://127.0.0.1:8000"
+// ─── THEME TOGGLE ─────────────────────────────────────────
+
+function toggleTheme() {
+    const body = document.body
+    const btn = document.getElementById("theme-btn")
+    // Why: check current theme and switch to opposite
+    if (body.classList.contains("light")) {
+        body.classList.remove("light")
+        btn.textContent = "☀️"
+        localStorage.setItem("theme", "dark")
+    } else {
+        body.classList.add("light")
+        btn.textContent = "🌙"
+        localStorage.setItem("theme", "light")
+    }
+}
+
+// Why: remember user's theme preference across page reloads
+function loadTheme() {
+    const saved = localStorage.getItem("theme")
+    if (saved === "light") {
+        document.body.classList.add("light")
+        document.getElementById("theme-btn").textContent = "🌙"
+    }
+}
+
+loadTheme()
+
+
+const API = "https://default-granite-driveway.ngrok-free.dev"
+
+// Why: ngrok free tier intercepts browser requests without this header
+const HEADERS = { "ngrok-skip-browser-warning": "true" }
 
 // ─── PANTRY ITEMS ───────────────────────────────────────────
 
 async function getItems() {
-    const response = await fetch(`${API}/items`)
+    const response = await fetch(`${API}/items`, { headers: HEADERS })
     const items = await response.json()
     renderItems(items)
 }
@@ -34,11 +66,10 @@ async function addItem() {
 
     await fetch(`${API}/items`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { ...HEADERS, "Content-Type": "application/json" },
         body: JSON.stringify(body)
     })
 
-    // clear all form fields after adding
     document.getElementById("name").value = ""
     document.getElementById("quantity").value = ""
     document.getElementById("unit").value = ""
@@ -52,7 +83,7 @@ async function addItem() {
 }
 
 async function deleteItem(id) {
-    await fetch(`${API}/items/${id}`, { method: "DELETE" })
+    await fetch(`${API}/items/${id}`, { method: "DELETE", headers: HEADERS })
     getItems()
     getShoppingList()
 }
@@ -65,7 +96,7 @@ async function editItem(id, currentQuantity, currentExpiry) {
 
     await fetch(`${API}/items/${id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { ...HEADERS, "Content-Type": "application/json" },
         body: JSON.stringify({
             quantity: parseInt(newQuantity),
             expiry_date: newExpiry || null
@@ -117,7 +148,7 @@ function renderItems(items) {
 // ─── SHOPPING LIST ───────────────────────────────────────────
 
 async function getShoppingList() {
-    const response = await fetch(`${API}/items/shopping`)
+    const response = await fetch(`${API}/items/shopping`, { headers: HEADERS })
     const items = await response.json()
     const list = document.getElementById("shopping-list")
 
@@ -140,7 +171,6 @@ async function getShoppingList() {
 // ─── DRAWER ──────────────────────────────────────────────────
 
 function openDrawer() {
-    // refresh shopping list every time drawer opens
     getShoppingList()
     document.getElementById("drawer").classList.add("active")
     document.getElementById("overlay").classList.add("active")
@@ -164,11 +194,10 @@ async function addRecipe() {
 
     await fetch(`${API}/recipes`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { ...HEADERS, "Content-Type": "application/json" },
         body: JSON.stringify({ name, ingredients })
     })
 
-    // clear fields after saving
     document.getElementById("recipe-name").value = ""
     document.getElementById("recipe-ingredients").value = ""
 
@@ -176,15 +205,14 @@ async function addRecipe() {
 }
 
 async function openCookModal() {
-    // open modal and show home recipes with green/red ingredient matching
     document.getElementById("cook-modal").classList.add("active")
     document.getElementById("modal-overlay").classList.add("active")
     document.getElementById("suggestions-list").innerHTML = `<div class="empty-state">Loading your recipes... 🍳</div>`
 
     // fetch pantry items and home recipes in parallel
     const [itemsRes, recipesRes] = await Promise.all([
-        fetch(`${API}/items`),
-        fetch(`${API}/recipes`)
+        fetch(`${API}/items`, { headers: HEADERS }),
+        fetch(`${API}/recipes`, { headers: HEADERS })
     ])
 
     const pantryItems = await itemsRes.json()
@@ -195,13 +223,10 @@ async function openCookModal() {
         return
     }
 
-    // get pantry item names in lowercase for comparison
     const pantryNames = pantryItems.map(i => i.name.toLowerCase().trim())
 
     document.getElementById("suggestions-list").innerHTML = recipes.map(recipe => {
-        // split ingredients string into array and check each against pantry
         const ingredients = recipe.ingredients.split(",").map(i => i.trim())
-
         const available = ingredients.filter(i => pantryNames.includes(i.toLowerCase()))
         const missing = ingredients.filter(i => !pantryNames.includes(i.toLowerCase()))
 
@@ -209,6 +234,7 @@ async function openCookModal() {
         <div class="dish-card">
             <div class="dish-card-header">
                 <h3>${recipe.name}</h3>
+                <button class="edit-recipe-btn" onclick="editRecipe(${recipe.id}, '${recipe.name}', '${recipe.ingredients}')">✏️</button>
                 <button class="delete-recipe-btn" onclick="deleteRecipe(${recipe.id})">🗑️</button>
             </div>
             <div>
@@ -220,10 +246,28 @@ async function openCookModal() {
 }
 
 async function deleteRecipe(id) {
-    await fetch(`${API}/recipes/${id}`, { method: "DELETE" })
-    // refresh the modal after deleting
+    await fetch(`${API}/recipes/${id}`, { method: "DELETE", headers: HEADERS })
     openCookModal()
 }
+
+async function editRecipe(id, currentName, currentIngredients) {
+    // prompt user for new name and ingredients
+    const newName = prompt(`Recipe name (current: ${currentName})`)
+    if (newName === null || newName === "") return
+
+    const newIngredients = prompt(`Ingredients (current: ${currentIngredients})`)
+    if (newIngredients === null || newIngredients === "") return
+
+    await fetch(`${API}/recipes/${id}`, {
+        method: "PUT",
+        headers: { ...HEADERS, "Content-Type": "application/json" },
+        body: JSON.stringify({ name: newName, ingredients: newIngredients })
+    })
+
+    // refresh modal to show updated recipe
+    openCookModal()
+}
+
 
 function closeModal() {
     document.getElementById("cook-modal").classList.remove("active")
@@ -236,7 +280,7 @@ async function getSuggestions() {
     const container = document.getElementById("ai-suggestions-list")
     container.innerHTML = `<div class="empty-state">Asking AI... 🤔</div>`
 
-    const response = await fetch(`${API}/suggest`)
+    const response = await fetch(`${API}/suggest`, { headers: HEADERS })
     const dishes = await response.json()
 
     if (dishes.error) {
