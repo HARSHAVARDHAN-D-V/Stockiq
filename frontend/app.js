@@ -128,6 +128,13 @@ function renderItems(items) {
         return
     }
 
+    const sorted = [...items].sort((a, b) => {
+    const order = { red: 0, yellow: 1, green: 2, "no-expiry": 3 }
+    const statusA = getExpiryStatus(a.expiry_date).cls
+    const statusB = getExpiryStatus(b.expiry_date).cls
+    return order[statusA] - order[statusB]
+})
+
     list.innerHTML = items.map(item => {
         const status = getExpiryStatus(item.expiry_date)
         return `
