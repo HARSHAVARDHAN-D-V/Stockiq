@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- dark background -->
+  <rect width="512" height="512" rx="80" fill="#0f0f0f"/>
+  
+  <!-- fridge body -->
+  <rect x="130" y="60" width="252" height="392" rx="24" fill="#1a1a1a" stroke="#4ade80" stroke-width="8"/>
+  
+  <!-- fridge divider line -->
+  <line x1="130" y1="220" x2="382" y2="220" stroke="#4ade80" stroke-width="8"/>
+  
+  <!-- freezer handle -->
+  <rect x="230" y="100" width="52" height="10" rx="5" fill="#4ade80"/>
+  
+  <!-- fridge handle -->
+  <rect x="230" y="280" width="52" height="10" rx="5" fill="#4ade80"/>
+
+  <!-- snowflake in freezer section -->
+  <text x="256" y="205" font-size="80" text-anchor="middle" fill="#4ade80">❄️</text>
+</svg>
