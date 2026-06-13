@@ -135,7 +135,7 @@ function renderItems(items) {
     return order[statusA] - order[statusB]
 })
 
-    list.innerHTML = items.map(item => {
+    list.innerHTML = sorted.map(item => {
         const status = getExpiryStatus(item.expiry_date)
         return `
         <div class="item-card ${status.cls}">
@@ -164,7 +164,7 @@ async function getShoppingList() {
         return
     }
 
-    list.innerHTML = sorted.map(item => `
+    list.innerHTML = items.map(item => `
         <div class="shopping-card">
             <div>
                 <h3>${item.name}</h3>
