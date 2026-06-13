@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pantry Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- overlay for drawer -->
+    <div class="overlay" id="overlay" onclick="closeDrawer()"></div>
+
+    <!-- slide out drawer -->
+    <div class="drawer" id="drawer">
+
+        <!-- section 1: shopping list -->
+        <div class="drawer-section">
+            <div class="drawer-header">
+                <h2>🛒 Shopping List</h2>
+                <button class="close-btn" onclick="closeDrawer()">✕</button>
+            </div>
+            <div id="shopping-list"></div>
+        </div>
+
+        <!-- section 2: add home recipe -->
+        <div class="drawer-section">
+            <h2 class="drawer-section-title">📖 Add Home Recipe</h2>
+            <input type="text" id="recipe-name" placeholder="Recipe name (e.g. Sambar)">
+            <input type="text" id="recipe-ingredients" placeholder="Ingredients (e.g. tomato, onion, toor dal)">
+            <button class="save-recipe-btn" onclick="addRecipe()">Save Recipe</button>
+        </div>
+
+        <!-- section 3: AI suggestions -->
+        <div class="drawer-section">
+            <h2 class="drawer-section-title">🤖 AI Suggestions</h2>
+            <button class="ai-btn" onclick="getSuggestions()">Ask AI what I can cook</button>
+            <div id="ai-suggestions-list"></div>
+        </div>
+
+    </div>
+
+    <!-- cook suggestion modal -->
+    <div class="modal-overlay" id="modal-overlay" onclick="closeModal()"></div>
+    <div class="modal" id="cook-modal">
+        <div class="modal-header">
+            <h2>🍳 What can I cook?</h2>
+            <button class="close-btn" onclick="closeModal()">✕</button>
+        </div>
+        <div id="suggestions-list"></div>
+    </div>
+
+    <div class="header">
+        <h1>🥦 Pantry Tracker</h1>
+        <p>Track what's at home</p>
+    </div>
+
+    <div class="container">
+
+        <div class="form-card">
+            <h2>Add Item</h2>
+            <input type="text" id="name" placeholder="Item name (e.g. Potato)">
+            <input type="number" id="quantity" placeholder="Quantity (e.g. 5)">
+            <input type="text" id="unit" placeholder="Unit (e.g. kg, pcs, packets)">
+            <label class="date-label">Expiry Date</label>
+            <input type="date" id="expiry_date">
+            <input type="text" id="category" placeholder="Category (e.g. Vegetable)">
+            <input type="number" id="min_quantity" placeholder="Restock alert below (0 = one-off item)">
+            <div class="fridge-toggle">
+                <label class="toggle-label">
+                    <input type="checkbox" id="is_fridge">
+                    <span>❄️ Fridge item?</span>
+                </label>
+            </div>
+            <button onclick="addItem()">Add to Pantry</button>
+        </div>
+
+        <div class="items-section">
+            <button class="cook-btn" onclick="openCookModal()">🍳 What can I cook?</button>
+            <h2>Your Pantry</h2>
+            <div id="items-list"></div>
+        </div>
+
+    </div>
+
+    <!-- floating action button -->
+    <button class="fab" onclick="openDrawer()">🛒</button>
+
+    <script src="app.js"></script>
+</body>
+</html>

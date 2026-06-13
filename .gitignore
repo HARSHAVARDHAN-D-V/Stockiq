@@ -1,0 +1,8 @@
+# python
+venv/
+__pycache__/
+*.pyc
+# database - don't upload, will be created fresh on server
+backend/pantry.db
+# environment variables - NEVER upload API keys to GitHub
+backend/.env
