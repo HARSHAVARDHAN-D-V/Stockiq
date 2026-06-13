@@ -164,7 +164,7 @@ async function getShoppingList() {
         return
     }
 
-    list.innerHTML = items.map(item => `
+    list.innerHTML = sorted.map(item => `
         <div class="shopping-card">
             <div>
                 <h3>${item.name}</h3>
