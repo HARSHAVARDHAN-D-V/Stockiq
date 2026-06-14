@@ -175,8 +175,14 @@ function renderItems(items) {
 // ─── SHOPPING LIST ───────────────────────────────────────────
 
 async function getShoppingList() {
-    const response = await fetch(`${API}/items/shopping`, { headers: HEADERS })
-    const items = await response.json()
+    // fetch shopping items and their notes in parallel
+    const [shoppingRes, notesRes] = await Promise.all([
+        fetch(`${API}/items/shopping`, { headers: HEADERS }),
+        fetch(`${API}/shopping-notes`, { headers: HEADERS })
+    ])
+
+    const items = await shoppingRes.json()
+    const notes = await notesRes.json()
     const list = document.getElementById("shopping-list")
 
     if (items.length === 0) {
@@ -184,15 +190,95 @@ async function getShoppingList() {
         return
     }
 
-    list.innerHTML = items.map(item => `
-        <div class="shopping-card">
-            <div>
-                <h3>${item.name}</h3>
-                <p>${item.quantity} ${item.unit} · ${item.category}</p>
+    // create a map of item_name -> note for quick lookup
+    // Why: so we can find the note for each shopping item without looping every time
+    const noteMap = {}
+    notes.forEach(n => { noteMap[n.item_name] = n })
+
+    list.innerHTML = items.map(item => {
+        const note = noteMap[item.name]
+        const noteId = note ? note.id : null
+        const noteText = note ? note.note : ""
+        const checked = note ? note.checked : false
+
+        return `
+        <div class="shopping-card ${checked ? 'checked' : ''}" id="shopping-card-${item.name}">
+            <div class="shopping-left">
+                <button class="check-btn ${checked ? 'checked' : ''}" 
+                    onclick="toggleCheck('${item.name}', ${noteId}, ${checked})">
+                    ${checked ? '✅' : '⬜'}
+                </button>
+                <div>
+                    <h3>${item.name}</h3>
+                    <p>${item.quantity} ${item.unit} · ${item.category}</p>
+                    <p class="reason-tag">${item.reason}</p>
+                    ${noteText ? `<p class="shopping-note-text">📝 ${noteText}</p>` : ""}
+                </div>
             </div>
-            <span class="reason-tag">${item.reason}</span>
-        </div>
-    `).join("")
+            <button class="add-note-btn" onclick="addNote('${item.name}', ${noteId}, '${noteText}')">
+                ${noteText ? '✏️' : '📝'}
+            </button>
+        </div>`
+    }).join("")
+}
+
+async function toggleCheck(itemName, noteId, currentChecked) {
+    if (noteId) {
+        // note exists — update checked status
+        await fetch(`${API}/shopping-notes/${noteId}`, {
+            method: "PUT",
+            headers: { ...HEADERS, "Content-Type": "application/json" },
+            body: JSON.stringify({ checked: !currentChecked })
+        })
+    } else {
+        // no note yet — create one with checked true
+        await fetch(`${API}/shopping-notes`, {
+            method: "POST",
+            headers: { ...HEADERS, "Content-Type": "application/json" },
+            body: JSON.stringify({ item_name: itemName, checked: true })
+        })
+    }
+    // refresh shopping list
+    getShoppingList()
+}
+
+let currentNoteItemName = null
+let currentNoteId = null
+
+function addNote(itemName, noteId, currentNote) {
+    currentNoteItemName = itemName
+    currentNoteId = noteId
+    document.getElementById("note-input").value = currentNote || ""
+    document.getElementById("note-modal").classList.add("active")
+    document.getElementById("note-overlay").classList.add("active")
+}
+
+async function submitNote() {
+    const newNote = document.getElementById("note-input").value.trim()
+
+    if (currentNoteId) {
+        await fetch(`${API}/shopping-notes/${currentNoteId}`, {
+            method: "PUT",
+            headers: { ...HEADERS, "Content-Type": "application/json" },
+            body: JSON.stringify({ note: newNote })
+        })
+    } else {
+        await fetch(`${API}/shopping-notes`, {
+            method: "POST",
+            headers: { ...HEADERS, "Content-Type": "application/json" },
+            body: JSON.stringify({ item_name: currentNoteItemName, note: newNote })
+        })
+    }
+
+    closeNoteModal()
+    getShoppingList()
+}
+
+function closeNoteModal() {
+    document.getElementById("note-modal").classList.remove("active")
+    document.getElementById("note-overlay").classList.remove("active")
+    currentNoteItemName = null
+    currentNoteId = null
 }
 
 // ─── DRAWER ──────────────────────────────────────────────────

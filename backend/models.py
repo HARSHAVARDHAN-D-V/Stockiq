@@ -18,5 +18,12 @@ class Recipe(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
     ingredients = Column(String, nullable=False)  # stored as comma separated string e.g. "tomato, onion, rice"
-    
+
+class ShoppingNote(Base):
+    __tablename__ = "shopping_notes"
+
+    id = Column(Integer, primary_key=True, index=True)
+    item_name = Column(String, nullable=False)  # links to pantry item by name
+    note = Column(String, nullable=True)         # optional note like "buy from D-Mart"
+    checked = Column(Boolean, default=False)     # whether item is checked off    
         

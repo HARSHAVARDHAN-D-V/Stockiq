@@ -154,6 +154,57 @@ def delete_recipe(recipe_id: int, db: Session = Depends(get_db)):
     db.commit()
     return {"message": "Recipe deleted"}
 
+class ShoppingNoteCreate(BaseModel):
+    item_name: str
+    note: Optional[str] = None
+
+class ShoppingNoteUpdate(BaseModel):
+    note: Optional[str] = None
+    checked: Optional[bool] = None
+
+@app.get("/shopping-notes")
+def get_shopping_notes(db: Session = Depends(get_db)):
+    # return all shopping notes
+    return db.query(models.ShoppingNote).all()
+
+@app.post("/shopping-notes")
+def create_shopping_note(data: ShoppingNoteCreate, db: Session = Depends(get_db)):
+    # create a note for a shopping item
+    existing = db.query(models.ShoppingNote).filter(
+        models.ShoppingNote.item_name == data.item_name
+    ).first()
+    if existing:
+        # Why: if note already exists for this item, just return it
+        return existing
+    note = models.ShoppingNote(**data.dict())
+    db.add(note)
+    db.commit()
+    db.refresh(note)
+    return note
+
+@app.put("/shopping-notes/{note_id}")
+def update_shopping_note(note_id: int, data: ShoppingNoteUpdate, db: Session = Depends(get_db)):
+    note = db.query(models.ShoppingNote).filter(models.ShoppingNote.id == note_id).first()
+    if not note:
+        raise HTTPException(status_code=404, detail="Note not found")
+    if data.note is not None:
+        note.note = data.note  # update note text
+    if data.checked is not None:
+        note.checked = data.checked  # update checked status
+    db.commit()
+    db.refresh(note)
+    return note
+
+@app.delete("/shopping-notes/{note_id}")
+def delete_shopping_note(note_id: int, db: Session = Depends(get_db)):
+    # Why: when item is checked off and removed from shopping list, delete its note too
+    note = db.query(models.ShoppingNote).filter(models.ShoppingNote.id == note_id).first()
+    if not note:
+        raise HTTPException(status_code=404, detail="Note not found")
+    db.delete(note)
+    db.commit()
+    return {"message": "Note deleted"}
+
 @app.get("/suggest")
 async def suggest_recipes(db: Session = Depends(get_db)):
     items = db.query(models.PantryItem).all()
@@ -213,3 +264,4 @@ Return only the JSON array, no extra text."""
             return {"suggestion": text}
     else:
         return {"error": "No choices returned"}
+

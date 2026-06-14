@@ -119,7 +119,16 @@
     <input type="text" id="edit-recipe-ingredients" placeholder="Ingredients (comma separated)">
     <button class="save-recipe-btn" style="margin-top: 12px;" onclick="submitRecipeEdit()">Save Changes</button>
 </div>
-
+<!-- add note modal -->
+<div class="modal-overlay" id="note-overlay" onclick="closeNoteModal()"></div>
+<div class="modal" id="note-modal">
+    <div class="modal-header">
+        <h2>📝 Add Note</h2>
+        <button class="close-btn" onclick="closeNoteModal()">✕</button>
+    </div>
+    <input type="text" id="note-input" placeholder="e.g. Buy from D-Mart">
+    <button class="save-recipe-btn" style="margin-top: 12px;" onclick="submitNote()">Save Note</button>
+</div>
 
 </body>
 </html>
