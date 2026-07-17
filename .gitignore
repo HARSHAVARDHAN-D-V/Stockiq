@@ -6,3 +6,4 @@ __pycache__/
 backend/pantry.db
 # environment variables - NEVER upload API keys to GitHub
 backend/.env
+*.pem

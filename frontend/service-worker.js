@@ -1,4 +1,4 @@
-const CACHE_NAME = "stockiq-v1"
+const CACHE_NAME = "stockiq-v3"
 
 // Why: cache these files so app loads even with slow connection
 const FILES_TO_CACHE = [
