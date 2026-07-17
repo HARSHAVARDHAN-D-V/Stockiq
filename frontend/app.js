@@ -24,7 +24,7 @@ function loadTheme() {
 
 loadTheme()
 
-const API = "http://13.206.218.160:8000"
+const API = "https://stockiq200506.mooo.com"
 
 // Why: ngrok free tier intercepts browser requests without this header
 const HEADERS = { "ngrok-skip-browser-warning": "true" }
