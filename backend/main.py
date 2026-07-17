@@ -29,7 +29,7 @@ app.add_middleware(
     allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
-    expose_headers=["ngrok-skip-browser-warning"]  # allows ngrok to pass requests without warning page
+   # expose_headers=["ngrok-skip-browser-warning"]   allows ngrok to pass requests without warning page
 )
 
 def get_db():
