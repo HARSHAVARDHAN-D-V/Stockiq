@@ -1,6 +1,5 @@
-const CACHE_NAME = "stockiq-v3"
+const CACHE_NAME = "stockiq-v4"
 
-// Why: cache these files so app loads even with slow connection
 const FILES_TO_CACHE = [
     "/",
     "/index.html",
@@ -8,7 +7,6 @@ const FILES_TO_CACHE = [
     "/app.js"
 ]
 
-// install event - cache all files
 self.addEventListener("install", event => {
     event.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
@@ -17,9 +15,12 @@ self.addEventListener("install", event => {
     )
 })
 
-// fetch event - serve from cache if available
-// Why: makes app load faster and work offline for static files
 self.addEventListener("fetch", event => {
+    // Why: only cache static files, never intercept API calls
+    if (event.request.url.includes("stockiq200506.mooo.com")) {
+        return // let API calls go through normally
+    }
+    
     event.respondWith(
         caches.match(event.request).then(response => {
             return response || fetch(event.request)
